@@ -1,33 +1,30 @@
 var express = require('express');
-var express = require('express');
 var bodyParser = require('body-parser');
 var cors = require('cors');
+var mongojs = require('mongojs');
 
 
 // app setup
 var app = express();
-// var api = require('./api/api');
 var port = 8080;
 
+// controllers
+var heroCtrl = require('./api/controllers/heroCtrl');
 
 // database setup
-var mongoJS = require('mongojs');
-var db = mongoJS('trello-clone', ['lists']);
+var db = mongojs('heroes', ['lists']);
 
 // setup the app middlware
 app.use(express.static('./public'));
-app.use(bodyParser());
+app.use(bodyParser.json());
 app.use(cors());
 
 // setup the api
-// app.get('/api/users', api.read);
-// app.post('/api/users', api.create);
-// app.put('/api/users', api.update);
-// app.delete('/api/users', api.destroy);
+app.get('/api/heroes', heroCtrl.read);
+app.post('/api/heroes', heroCtrl.create);
+// app.put('/api/heroes', heroCtrl.update);
+// app.delete('/api/heroes', heroCtrl.destroy);
 // set up global error handling
-
-// export the app for testing
-module.exports = app;
 
 
 app.listen(port, function() {

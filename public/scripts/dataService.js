@@ -1,9 +1,13 @@
 angular
     .module('avengers')
-    .service('dataService', function() {
+    .service('dataService', function($http) {
+
+        var baseUrl = '/api/heroes';
 
         this.getAvengers = function() {
-            return teamAvengers;
+            return $http.get(baseUrl).then(function(response) {
+                return response;
+            });
         };
 
         var teamAvengers = [
